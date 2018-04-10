@@ -23,7 +23,7 @@ def print_menu():
     print("# 1. Display League Table #")
     print("# 2. Record Match Result  #")
     print("# 3. Add New Player       #")
-    print("# 3. List Match History  #")
+    print("# 3. List Match History   #")
     print("# 5. Exit                 #")
     print("###########################\n")
 

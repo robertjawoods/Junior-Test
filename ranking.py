@@ -17,6 +17,8 @@ except ImportError:
 SIGMA = 400.  # type: float
 K_FACTOR = 32  # 32 is suggested on Metin's Media & Math
 
+INITIAL_RATING = 1200
+
 logger = logging.getLogger("elo_ranking")
 logging.basicConfig(level=logging.INFO)
 

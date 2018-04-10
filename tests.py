@@ -3,6 +3,8 @@ import itertools
 import ranking
 import main
 import player
+import leaderboard
+import json
 
 if False:
     import collections
@@ -72,6 +74,10 @@ class TestRanking(unittest.TestCase):
         rob = player.Player("Rob", 1200)
         zak = player.Player("Zak", 1200)
 
+        board = leaderboard.Leaderboard()
+        board.add_player(rob)
+        board.add_player(zak)
+
         # Act 
         print(zak)
         print(rob)
@@ -79,6 +85,42 @@ class TestRanking(unittest.TestCase):
         # Assert
         self.assertEqual(main.try_load_leaderboard(), None)
         self.assertNotEqual(rob.name, zak.name)
+
+    def test_check_leaderboard_saving(self):
+        # Arrange 
+        rob = player.Player("Rob", 1600)
+        zak = player.Player("Zak", 1200)
+        cieran = player.Player("Cieran", 900)
+
+        # Act 
+        board = leaderboard.Leaderboard()
+        board.add_player(rob)
+        board.add_player(zak)
+        board.add_player(cieran)
+
+        print(json.dumps(zak))
+
+        print(json.dumps(board))
+
+
+    
+    def test_check_leaderboard_is_in_order(self):
+         # Arrange 
+        rob = player.Player("Rob", 1600)
+        zak = player.Player("Zak", 1200)
+        cieran = player.Player("Cieran", 900)
+
+        # Act 
+        board = leaderboard.Leaderboard()
+        board.add_player(rob)
+        board.add_player(zak)
+        board.add_player(cieran)
+
+        # Assert
+        self.assertEqual(board.rankings[0].name, "Rob")
+        self.assertEqual(board.rankings[1].name, "Zak")
+        self.assertEqual(board.rankings[2].name, "Cieran")
+
 
 
 

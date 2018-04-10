@@ -3,9 +3,9 @@
 # Record matches
 # Add players
 
-import ranking
 import os.path
 import logging
+import ranking
 
 # Configure logging for easier debugging 
 logger = logging.getLogger("elo_ranking_interface")
@@ -17,3 +17,4 @@ def try_load_leaderboard():
      except:
          logger.info("Unable to find log file")
          return None
+

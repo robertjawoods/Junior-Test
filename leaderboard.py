@@ -1,19 +1,25 @@
 import player
 
-class Leaderboard:
+class Leaderboard():
 
     def __init__(self):
         self.rankings = []
 
-    def addPlayer(player):
-        self.rankings.insert(getPlayerPosition(player), player)
-
-    def getPlayerPosition(player):
+    def get_player_position(self, player):
         position = 0
+
+        if len(self.rankings) == 0:
+            return 0
 
         for p in self.rankings:
             if p.eloRanking > player.eloRanking:
-                position++
+                position += 1
+            elif p.eloRanking <= player.eloRanking:
+               break
 
-            if p.eloRanking <= player.eloRanking:
-                return position
+        return position
+        
+    def add_player(self, player):
+        position = self.get_player_position(player)
+        self.rankings.insert(position, player)
+

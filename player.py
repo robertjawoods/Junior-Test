@@ -4,5 +4,11 @@ class Player:
         self.name = name
         self.eloRanking = eloRanking
 
+        self.matchHistory = []
+
     def __str__(self):
         return f"Name: {self.name} - Elo Ranking: {self.eloRanking}"
+
+
+    def add_match_to_history(self, match):
+        self.matchHistory.append(match)

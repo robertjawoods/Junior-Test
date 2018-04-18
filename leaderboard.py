@@ -20,6 +20,15 @@ class Leaderboard():
                break
 
         return position
+
+    def __str__(self):
+        result = ""
+
+        for r in self.rankings:
+            result += f"{r}\n"
+    
+        return result
+
         
     def add_player(self, player):
         position = self.get_player_position(player)
@@ -34,7 +43,7 @@ class Leaderboard():
         p.eloRanking = newElo
 
     def update_league_rankings(self):
-        print("Not implemented")
+        self.rankings.sort(key = lambda x: x.eloRanking, reverse=True)
 
     # In a large leaderboard, a linear search could take a while. As this is so small, anything else seems like it'd be overkill
     def get_player_by_name(self, name):
@@ -58,12 +67,19 @@ class Leaderboard():
         game.record_score(player1Name, player1Score)
         game.record_score(player2Name, player2Score)
 
+        self.get_player_by_name(player1Name).add_match_to_history(game)
+        self.get_player_by_name(player2Name).add_match_to_history(game)
+
         ranks = self.get_league_rankings(player1Name, player2Name)
 
         scores = game.get_match_results()
         updated_elo = ranking.apply_multiplayer_updates(scores, ranks)
 
-        for k, v in updated_elo.items():
-            self.update_elo(k, v)
+        for name, newElo in updated_elo.items():
+            self.update_elo(name, newElo)
 
-        #self.update_league_rankings()
+        self.update_league_rankings()
+
+
+    def has_players(self):
+        return len(self.rankings) > 0

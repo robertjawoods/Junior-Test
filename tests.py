@@ -101,7 +101,7 @@ class TestRanking(unittest.TestCase):
 
         print(json.dumps(board))
 
-    def test_check_leaderboard_is_in_order(self):
+    def test_check_leaderboard_is_in_order_start(self):
          # Arrange        
         cieran = player.Player("Cieran", 900)
         rob = player.Player("Rob", 1600)
@@ -158,7 +158,47 @@ class TestRanking(unittest.TestCase):
         board.recordMatch(rob.name, 1, zak.name, 0)
 
         # Assert - TODO: Work out why these are failing, it might be because eloRanking is an int and the other val is a float
-        self.assertEqual(board.get_player_by_name(rob.name).eloRanking, 1200 + testResults[rob.name])
-        self.assertEqual(board.get_player_by_name(zak.name).eloRanking, 1200 + testResults[zak.name])
+
+        elo1 = board.get_player_by_name(rob.name).eloRanking
+        elo2 = board.get_player_by_name(zak.name).eloRanking
+
+        testElo1 = 1200 + testResults[rob.name][0]
+        testElo2 = 1200 + testResults[zak.name][0]
+
+        self.assertAlmostEqual(elo1, testElo1)
+        self.assertAlmostEqual(elo2, testElo2)
+
+    def test_match_history_recording(self):
+        rob = player.Player("Rob", 1200)
+        zak = player.Player("Zak", 1200)
+
+        board = leaderboard.Leaderboard()
+        board.add_player(rob)
+        board.add_player(zak)
+
+        board.recordMatch(zak.name, 1, rob.name, 0)
+
+        self.assertEqual(len(rob.matchHistory), 1)
+        self.assertEqual(len(zak.matchHistory), 1)
+
+    def test_leaderboard_update(self):
+        rob = player.Player("Rob", 1200)
+        zak = player.Player("Zak", 1200)
+
+        board = leaderboard.Leaderboard()
+        board.add_player(rob)
+        board.add_player(zak)
+
+        board.recordMatch(zak.name, 1, rob.name, 0)
+
+        self.assertEqual(board.rankings[0].name, zak.name)
+        self.assertEqual(board.rankings[1].name, rob.name)
+
+        board.recordMatch(zak.name, 0, rob.name, 1)
+        board.recordMatch(zak.name, 0, rob.name, 1)
+
+        self.assertEqual(board.rankings[0].name, rob.name)
+        self.assertEqual(board.rankings[1].name, zak.name)
+        
 
     if __name__ == '__main__': unittest.main()
